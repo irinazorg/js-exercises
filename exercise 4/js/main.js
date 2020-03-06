@@ -15,11 +15,18 @@ let startBtn = document.getElementById("start"),
     day = document.getElementsByClassName("day-value")[0],
     
     expensesItem = document.getElementsByClassName("expenses-item"),
+
+    chackSavings = document.getElementById("savings"),
     
     approveBtn = document.getElementsByTagName("button")[0],
     approveOptBtn = document.getElementsByTagName("button")[1],
     calculateBtn = document.getElementsByTagName("button")[2],
-    
+
+    incomeItem = document.querySelector(".choose-income"),
+
+    sumValue = document.querySelector(".choose-sum"),
+    percentValue = document.querySelector(".choose-percent"),
+
     optionalExpensesItem = document.querySelectorAll(".optionalexpenses-item");
 
 let money, time;
@@ -86,13 +93,31 @@ calculateBtn.addEventListener("click", function() {
     }
 });
 
+incomeItem.addEventListener("input", function() {
+    let items = incomeItem.value;
+    appData.income = items.split(", ");
+    incomeValue.textContent = appData.income;
+});
+
+chackSavings.addEventListener("click", function() {
+    if (appData.savings == true) {
+        appData.savings = false;
+    } else {
+        appData.savings = true;
+    }
+});
+
+sumValue.addEventListener("input", function() {
+
+});
+
 let appData = {
     budget: money,
     expenses: {},
     optionalExpenses: {},
     income: [],
     timeData: time,
-    savings: true,
+    savings: false,
     detectDayBudget: function () {
         appData.moneyPerDay = (appData.budget / 3).toFixed();
         alert("Ежедневный бюджет " + appData.moneyPerDay);
