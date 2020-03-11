@@ -31,6 +31,10 @@ let startBtn = document.getElementById("start"),
 
 let money, time;
 
+approveBtn.disabled = true;
+approveOptBtn.disabled = true;
+calculateBtn.disabled = true;
+
 startBtn.addEventListener("click", function() {
     time = prompt("Введите дату в формате YYYY-MM-DD", "");
     money = +prompt("Ваш бюджет на месяц?", "");
@@ -44,6 +48,9 @@ startBtn.addEventListener("click", function() {
     year.value = new Date(Date.parse(time)).getFullYear();
     month.value = new Date(Date.parse(time)).getMonth() + 1;
     day.value = new Date(Date.parse(time)).getDate();
+    approveBtn.disabled = false;
+    approveOptBtn.disabled = false;
+    calculateBtn.disabled = false;
 });
 
 approveBtn.addEventListener("click", function() {
@@ -76,14 +83,14 @@ approveOptBtn.addEventListener("click", function() {
 
 calculateBtn.addEventListener("click", function() {
     if (appData.budget != undefined) {
-        appData.moneyPerDay = (appData.budget / 30).toFixed();
+        appData.moneyPerDay = ((appData.budget - +expensesValue.textContent) / 30).toFixed();
         daybudgetValue.textContent = appData.moneyPerDay;
 
-        if (appData.budget < 100) {
+        if (appData.moneyPerDay < 100) {
             levelValue.textContent = "Минимальный уровнь достатка";
-        } else if (appData.budget > 100 && appData.budget < 2000) {
+        } else if (appData.moneyPerDay > 100 && appData.moneyPerDay < 2000) {
             levelValue.textContent = "Средний уровнь достатка";
-        } else if (appData.budget > 2000) {
+        } else if (appData.moneyPerDay > 2000) {
             levelValue.textContent = "Высокий уровнь достатка";
         } else {
             levelValue.textContent = "Упс, что-то пошло не так";
@@ -108,7 +115,27 @@ chackSavings.addEventListener("click", function() {
 });
 
 sumValue.addEventListener("input", function() {
+    if (appData.savings == true) {
+        let sumSavings = +sumValue.value,
+            percent = +percentValue.value;
+        appData.monthIncome = sumSavings / 100 / 12 * percent;
+        appData.yearIncome = sumSavings / 100 * percent;
 
+        monthsavingsValue.textContent = appData.monthIncome.toFixed(1);
+        yearsavingsValue.textContent = appData.yearIncome.toFixed(1);
+    }
+});
+
+percentValue.addEventListener("input", function() {
+    if (appData.savings == true) {
+        let sumSavings = +sumValue.value,
+            percent = +percentValue.value;
+        appData.monthIncome = sumSavings / 100 / 12 * percent;
+        appData.yearIncome = sumSavings / 100 * percent;
+
+        monthsavingsValue.textContent = appData.monthIncome.toFixed(1);
+        yearsavingsValue.textContent = appData.yearIncome.toFixed(1);
+    }
 });
 
 let appData = {
